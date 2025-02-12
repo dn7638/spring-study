@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: users
+  security:
+    user:
+      name: none
+      password: none
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/myappdb
+    username: myappuser
+    password: password
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
