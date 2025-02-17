@@ -8,17 +8,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/petsitters")
 public class PetsitterController {
 
-    @Autowired
-    private PetsitterService petsitterService;
+    private final PetsitterService petsitterService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Petsitter> createPetsitter(@PathVariable Long userId, @RequestBody PetsitterRequest petsitterRequest) {
+    @PostMapping()
+    public ResponseEntity<Petsitter> createPetsitter(@RequestBody PetsitterRequest petsitterRequest, HttpSession session) {
+        Long userId = (Long) session.getAttribute("user");
+        if (userId == null) {
+            return ResponseEntity.status(402).build();
+        }
         Petsitter createdPetsitter = petsitterService.createPetsitter(userId, petsitterRequest);
         return ResponseEntity.ok(createdPetsitter);
     }
