@@ -19,6 +19,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        hbm2ddl.auto: update
+        hbm2ddl.schema-generation.foreign_keys: false
 
 server:
   port: 8081

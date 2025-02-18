@@ -14,6 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
 import com.example.users.domain.User;
 import com.example.petsitters.domain.Petsitter;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.ConstraintMode;
 
 @Entity
 @Table(name = "petsitter_bookings")
@@ -38,6 +40,9 @@ public class Booking {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "petsitter_id", nullable = false)
+    @JoinColumn(
+        name = "petsitter_id", 
+        foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT)
+    )
     private Petsitter petsitter;
 } 

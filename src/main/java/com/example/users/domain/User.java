@@ -10,6 +10,8 @@ import java.util.List;
 import com.example.petsitters.domain.Petsitter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.ConstraintMode;
 
 @Entity
 @Getter
@@ -59,5 +61,9 @@ public class User {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "petsitter_id", 
+        foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
     private Petsitter petsitter;
 }

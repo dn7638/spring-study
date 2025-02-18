@@ -18,7 +18,10 @@ public class Petsitter {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(
+        name = "user_id", 
+        foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT)
+    )
     private User user;
 
     private String location;
