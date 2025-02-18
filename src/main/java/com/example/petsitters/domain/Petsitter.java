@@ -3,16 +3,21 @@ package com.example.petsitters.domain;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import com.example.users.domain.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "petsitters")
+@Getter @Setter
 public class Petsitter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

@@ -93,10 +93,16 @@ public class UserService {
     }
 
     // ✅ 사용자 삭제 (관리자만 가능)
-    public void deleteUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        userRepository.delete(user);
+    public void deleteUser(Long userId, Long requesterId) {
+        User requester = userRepository.findById(requesterId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // 관리자가 아니면서 본인이 아닌 경우
+        if (!requesterId.equals(userId) && !"ADMIN".equals(requester.getRole())) {
+            throw new RuntimeException("권한이 없습니다");
+        }
+        
+        userRepository.deleteById(userId);
     }
 
 

@@ -2,6 +2,7 @@ package com.example.petsitters.service;
 
 import com.example.petsitters.domain.Petsitter;
 import com.example.petsitters.dto.PetsitterRequest;
+import com.example.petsitters.dto.PetsitterResponse;
 import com.example.petsitters.repository.PetsitterRepository;
 import com.example.users.domain.User;
 import com.example.users.repository.UserRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PetsitterService {
@@ -36,8 +38,29 @@ public class PetsitterService {
         return petsitterRepository.findById(id);
     }
 
-    public List<Petsitter> getAllPetsitters() {
-        return petsitterRepository.findAll();
+    public List<PetsitterResponse> getAllPetsitters() {
+        return petsitterRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private PetsitterResponse convertToDto(Petsitter petsitter) {
+        PetsitterResponse response = new PetsitterResponse();
+        response.setId(petsitter.getId());
+        response.setLocation(petsitter.getLocation());
+        response.setExperience(petsitter.getExperience());
+        response.setProfilePhoto(petsitter.getProfilePhoto());
+        response.setCertification(petsitter.getCertification());
+        response.setCreatedAt(petsitter.getCreatedAt());
+        
+        User user = petsitter.getUser();
+        PetsitterResponse.UserInfo userInfo = new PetsitterResponse.UserInfo();
+        userInfo.setUserId(user.getUserId());
+        userInfo.setName(user.getName());
+        userInfo.setNickname(user.getNickname());
+        response.setUser(userInfo);
+        
+        return response;
     }
 
     public void deletePetsitter(Long id) {

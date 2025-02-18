@@ -2,14 +2,15 @@ package com.example.petsitters.controller;
 
 import com.example.petsitters.domain.Petsitter;
 import com.example.petsitters.dto.PetsitterRequest;
+import com.example.petsitters.dto.PetsitterResponse;
 import com.example.petsitters.service.PetsitterService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -57,5 +58,11 @@ public class PetsitterController {
         }   
         Petsitter updatedPetsitter = petsitterService.updatePetsitter(userId, petsitterId, petsitterRequest);
         return ResponseEntity.ok(updatedPetsitter);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PetsitterResponse>> getAllPetsitters() {
+        List<PetsitterResponse> responses = petsitterService.getAllPetsitters();
+        return ResponseEntity.ok(responses);
     }
 } 
