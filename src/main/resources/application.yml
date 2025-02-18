@@ -25,7 +25,9 @@ server:
   servlet:
     session:
       cookie:
-        name: SESSION_ID
-        http-only: false
+        name: SESSION
+        http-only: true
         secure: false
-        same-site: none
+        same-site: lax
+        domain: localhost
+        path: /

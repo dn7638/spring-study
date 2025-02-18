@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     public UserResponse register(UserRegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -51,9 +54,11 @@ public class UserService {
         }
 
         User user = optionalUser.get();
-        session.setAttribute("user", user.getUserId());  // 세션 저장
-
-        return new UserResponse(user.getUserId(), user.getEmail(), user.getName(), user.getNickname(), user.getPhone(), user.getRole());
+        session.setAttribute("user", user.getUserId());
+        logger.info("세션 생성 완료 - ID: {} | User ID: {}", session.getId(), user.getUserId());
+        
+        return new UserResponse(user.getUserId(), user.getEmail(), user.getName(),
+                user.getNickname(), user.getPhone(), user.getRole());
     }
 
 // ✅ 사용자 목록 조회 (관리자만 가능)
